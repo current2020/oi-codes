@@ -1,48 +1,27 @@
 #include<stdio.h>
 
 typedef long long ll;
-const int MAXN = 1005;
-const ll P = 998244353;
-ll p[MAXN][MAXN];
 
-void exgcd(ll a, ll b, ll& x, ll& y)
+ll exgcd(ll a, ll b, ll& x, ll& y)
 {
     if(b == 0)
     {
         x = 1;
         y = 0;
-        return;
+        return a;
     }
-    exgcd(b, a % b, x, y);
+    ll gcd = exgcd(b, a % b, x, y);
     ll t = x;
     x = y;
     y = t - (a / b) * x;
+    return gcd;
 }
+
 int main(int argc, char const *argv[])
 {
-    p[0][0] = 1;
-    int n, m, k;
-    ll inv, tmp, ans = 0;
-    scanf("%d%d%d", &n, &m, &k);
-    exgcd(m, P, inv, tmp);
-    inv = (inv % P + P) % P;
-    for(int t = 1; t <= k; ++t)
-    {
-        for(int i = 1; i <= n; ++i)
-        {
-            for(int k = i - m; k < i; ++k)
-            {
-                if(k < 0) continue;
-                p[i][t] = (p[i][t] + p[k][t - 1] * inv % P) % P;
-            }
-            if(i >= n - m + 1 && i < n)
-            {
-                for(int k = n + n - m - i; k < n; ++k)
-                    p[i][t] = (p[i][t] + p[k][t - 1] * inv % P) % P;
-            }
-        }
-        ans = (ans + p[n][t]) % P;
-    }
-    printf("%lld\n", ans);
+    ll a, b, x, y, gcd;
+    scanf("%ld%ld", &a, &b);
+    gcd = exgcd(a, b, x, y);
+    printf("gcd: %ld\nx: %ld, y: %ld\n", gcd, x, y);
     return 0;
 }
