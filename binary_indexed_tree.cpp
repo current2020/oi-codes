@@ -1,18 +1,18 @@
 #include<stdio.h>
 
 const int MAXN = 500005;
-int a[MAXN], c[MAXN];
+int a[MAXN], c[MAXN], n;
 
-inline int lowbit(int x) { return x & (-x); }
+inline int lowbit(int x) { return x&(-x); }
 
-void build(int n)
+void add(int x, int d)
 {
-    for(int i = 1; i <= n; ++i)
-        for(int j = i - lowbit(i) + 1; j <= i; ++j)
-            c[i] += a[j];
+    while(x <= n)
+    {
+        c[x] += d;
+        x += lowbit(x);
+    }
 }
-
-void add(int p, int d, int n) { for(int i = p; i <= n; i += lowbit(i)) c[i] += d; }
 
 int query(int x)
 {
@@ -23,6 +23,12 @@ int query(int x)
         x -= lowbit(x);
     }
     return res;
+}
+
+void build()
+{
+    for(int i = 1; i <= n; ++i)
+        add(i, a[i]);
 }
 
 int read()
@@ -44,20 +50,15 @@ int read()
 
 int main(int argc, char const *argv[])
 {
-    int n = read(), m = read(), q, x, y;
+    n = read();
+    int m = read(), q, x, y;
     for(int i = 1; i <= n; ++i) a[i] = read();
-    build(n);
+    build();
     while(m--)
     {
         q = read(), x = read(), y = read();
-        if(q == 1)
-        {
-            add(x, y, n);
-        }
-        else
-        {
-            printf("%d\n", query(y) - query(x - 1));
-        }
+        if(q == 1) add(x, y);
+        else printf("%d\n", query(y) - query(x - 1));
     }
     return 0;
 }
