@@ -10,11 +10,9 @@ ll exgcd(ll a, ll b, ll& x, ll& y)
         y = 0;
         return a;
     }
-    ll gcd = exgcd(b, a % b, x, y);
-    ll t = x;
-    x = y;
-    y = t - (a / b) * x;
-    return gcd;
+    ll g = exgcd(b, a%b, y, x);
+    y = y - (a/b) * x;
+    return g;
 }
 
 int main(int argc, char const *argv[])
