@@ -38,6 +38,7 @@ bool bfs()
         q.pop();
         for(int i = last[x]; i; i = nxt[i])
         {
+            if(c[i^1] == 0) continue;
             y = ver[i];
             if(level[y] >= 0) continue;
             ++gap[level[y] = level[x] + 1];
